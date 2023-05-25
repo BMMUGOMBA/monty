@@ -1,45 +1,6 @@
 #include "monty.h"
 
 /**
- * push - adds new node to the stack
- * @s: pointer to stack
- * @n: line number
- * @value: value of new node
- */
-void push(stack_t **s, unsigned int n, int value)
-{
-	stack_t *new;
-	stack_t *current;
-
-	(void) n;
-
-	new = malloc(sizeof(stack_t));
-	if (new == NULL)
-	{
-		fprintf(stderr, "Error: malloc failed\n");
-		exit(EXIT_FAILURE);
-	}
-	new->n = value;
-	new->next = NULL;
-	new->prev = NULL;
-	if (*s == NULL)
-		*s = new;
-	else if (!g.stoq) /* is stack: add to top */
-	{
-		new->next = *s;
-		(*s)->prev = new;
-		*s = new;
-	}
-	else /* is queue: add to bottom */
-	{
-		current = *s;
-		while (current->next)
-			current = current->next;
-		current->next = new;
-		new->prev = current;
-	}
-}
-/**
  * pop - delets top of stack
  * @s: pointer to stack
  * @n: line number
@@ -71,6 +32,9 @@ void pop(stack_t **s, unsigned int n)
 	}
 	free(temp);
 }
+
+#include "monty.h"
+
 /**
  * stack - change data to a stack (LIFO, default)
  * @s: pointer to stack

@@ -1,48 +1,50 @@
-
 #include "monty.h"
-
 /**
- * parse_string - input at newline
+ * parse - parse input at newline
  * @s: input
  * @buffer: buffer for output
  * Return: 2d array of parsed input
  */
-char **parse_string(char *s, char *buffer[])
+char **parse(char *s, char *buffer[])
 {
-int count = 0; /* a variable to count the tokens*/
-char *token; /* a pointer to store each token */
+	char delim[] = "\n";
+	char *token;
+	int i = 0;
 
-token = strtok(s, ",");
-while (token != NULL)
-{
-buffer[count] = token;
-count++;
-token = strtok(NULL, ",");
-}
-if (buffer[0] == NULL)
-return (NULL);
-return (buffer);
-}
+	token = strtok(s, delim);
 
+	while (token)
+	{
+		buffer[i] = token;
+		token = strtok(NULL, delim);
+		i++;
+	}
+	if (buffer[0] == NULL)
+		return (NULL);
+	return (buffer);
+}
 /**
- * parse_space - input at newline
+ * parse_space - parse input at space
  * @s: input
  * @buffer: buffer for output
  * Return: 2d array of parsed input
  */
 char **parse_space(char *s, char *buffer[])
 {
-int count = 0; /* a variable to count the tokens*/
-char *token; /* a pointer to store each token */
-token = strtok(s, " ");
-while (token != NULL)
-{
-buffer[count] = token;
-count++;
-token = strtok(NULL, " ");
-}
-if (buffer[0] == NULL)
-return (NULL);
+	char delim[] = " ";
+	char *token;
+	int i = 0;
+
+	token = strtok(s, delim);
+
+	while (token)
+	{
+		buffer[i] = token;
+		token = strtok(NULL, delim);
+		i++;
+	}
+	if (buffer[0] == NULL)
+		return (NULL);
 	return (buffer);
 }
 
@@ -108,18 +110,13 @@ void (*get_function(char *s)) (stack_t **s, unsigned int n)
 		{"pint", pint},
 		{"pop", pop},
 		{"swap", swap},
-	/**	{"add", add},
+		{"add", add},
 		{"sub", sub},
 		{"div", divi},
 		{"mul", mul},
 		{"mod", mod},
-		{"pchar", pchar},
-		{"pstr", pstr},
-		{"rotl", rotl},
-		{"rotr", rotr},
 		{"stack", stack},
 		{"queue", queue},
-		{"nop", nop},*/
 		{NULL, NULL}
 	};
 
@@ -189,4 +186,3 @@ void free_list(stack_t **s)
 	}
 	free(s);
 }
-
