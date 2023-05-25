@@ -1,36 +1,44 @@
 #include "monty.h"
 
+
 /**
- * push - adds to the beginning of the stack
- * @stk: top of stack
- * @linenum: line number for the passed token
- * Return: void
+ * push - adds new node to the stack
+ * @s: pointer to stack
+ * @n: line number
+ * @value: value of new node
  */
-void push(stack_t **stk, unsigned int linenum)
+void push(stack_t **s, unsigned int n, int value)
 {
 	stack_t *new;
+	stack_t *current;
 
-	if (stk == NULL)
-	{
-		printf("L%d: unknown stack\n", linenum);
-		exit(EXIT_FAILURE);
-	}
+	(void) n;
 
 	new = malloc(sizeof(stack_t));
-
 	if (new == NULL)
 	{
-		printf("Error: malloc failed\n");
-		free_stk(stk, linenum);
+		fprintf(stderr, "Error: malloc failed\n");
 		exit(EXIT_FAILURE);
 	}
-	new->n = variables.holder;
+	new->n = value;
+	new->next = NULL;
 	new->prev = NULL;
-	new->next = *stk;
-
-	if (*stk != NULL)
-		(*stk)->prev = new;
-	*stk = new;
+	if (*s == NULL)
+		*s = new;
+	else if (!g.stoq) /* is stack: add to top */
+	{
+		new->next = *s;
+		(*s)->prev = new;
+		*s = new;
+	}
+	else /* is queue: add to bottom */
+	{
+		current = *s;
+		while (current->next)
+			current = current->next;
+		current->next = new;
+		new->prev = current;
+	}
 }
 
 /**
@@ -59,32 +67,37 @@ void pall(stack_t **stk, unsigned int linenum)
 }
 
 /**
- * pop - function to pop the top of stack
- * @stk: top of stack
- * @linenum: line number
- * Return: void
+ * pop - delets top of stack
+ * @s: pointer to stack
+ * @n: line number
  */
-void pop(stack_t **stk, unsigned int linenum)
+void pop(stack_t **s, unsigned int n)
 {
-	if (stk == NULL || *stk == NULL)
+	stack_t *temp;
+	(void) s;
+	(void) n;
+
+	temp = *s;
+
+	if (!*s)
 	{
-		printf("L%d: can't pop an empty stack\n", linenum);
+		fprintf(stderr, "L%d: can't pop an empty stack\n", n);
+		free(s);
 		exit(EXIT_FAILURE);
 	}
-	if ((*stk)->next != NULL)
+	if (!temp->next)
 	{
-		*stk = (*stk)->next;
-		variables.holder = (*stk)->n;
-		free((*stk)->prev);
-		(*stk)->prev = NULL;
+		free(*s);
+		*s = NULL;
+		return;
 	}
 	else
 	{
-		free(*stk);
-		*stk = NULL;
+		(*s)->next->prev = NULL;
+		*s = (*s)->next;
 	}
+	free(temp);
 }
-
 /**
  * pint - function prints the value at the top of the stack
  * @stk: stack
@@ -115,7 +128,7 @@ void swap(stack_t **stk, unsigned int linenum)
 	if (stk == NULL || *stk == NULL || (*stk)->next == NULL)
 	{
 		printf("L%d: can't swap, stack too short\n", linenum);
-		free_stk(stk, linenum);
+		free_list(stk);
 		exit(EXIT_FAILURE);
 	}
 	temp = (*stk)->n;

@@ -7,7 +7,7 @@
  * @buffer: buffer for output
  * Return: 2d array of parsed input
  */
-int **parse_string(char *s, char *buffer[])
+char **parse_string(char *s, char *buffer[])
 {
 int count = 0; /* a variable to count the tokens*/
 char *token; /* a pointer to store each token */
@@ -30,7 +30,7 @@ return (buffer);
  * @buffer: buffer for output
  * Return: 2d array of parsed input
  */
-int **parse_space(char *s, char *buffer[])
+char **parse_space(char *s, char *buffer[])
 {
 int count = 0; /* a variable to count the tokens*/
 char *token; /* a pointer to store each token */
@@ -108,7 +108,7 @@ void (*get_function(char *s)) (stack_t **s, unsigned int n)
 		{"pint", pint},
 		{"pop", pop},
 		{"swap", swap},
-		{"add", add},
+	/**	{"add", add},
 		{"sub", sub},
 		{"div", divi},
 		{"mul", mul},
@@ -119,7 +119,7 @@ void (*get_function(char *s)) (stack_t **s, unsigned int n)
 		{"rotr", rotr},
 		{"stack", stack},
 		{"queue", queue},
-		{"nop", nop},
+		{"nop", nop},*/
 		{NULL, NULL}
 	};
 
