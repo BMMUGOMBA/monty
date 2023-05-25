@@ -68,7 +68,7 @@ void divi(stack_t **s, unsigned int n);
 void sub(stack_t **s, unsigned int n);
 void add(stack_t **s, unsigned int n);
 char **parse_space(char *s, char *buffer[]);
-char **parse(char *s, char *buffer[]);
+char **parse_string(char *s, char *buffer[]);
 void pop(stack_t **s, unsigned int n);
 void pint(stack_t **s, unsigned int n);
 void pchar(stack_t **s, unsigned int n);
